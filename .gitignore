@@ -1,0 +1,40 @@
+# Unity specific
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+Assets/AssetStoreTools*
+
+# Rider specific
+.idea/
+
+# VS/MD specific
+.vs/
+*.suo
+*.userprefs
+*.unityproj
+*.csproj
+*.pdb
+*.pdb.meta
+
+# Build Results
+*.apk
+*.unitypackage
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Some versions of Unity (<=2018.2.x aren't excluded by default, but generated items (.csproj, Assembly-CSharp.csproj, .unityproj) now; those should NEVER be included in the shipped game)
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Unity3D Generated File On Crash Reports
+[Dd]ata/[Rr]aw/*.[Aa][Ss][Ee]
+[Dd]ata/[Rr]aw/*.[Ff][Bb][Xx]
+[Dd]ata/[Rr]aw/*.[Bb][Ll][Ee][Nn][Dd]
+[Dd]ata/[Rr]aw/*.[Pp][Rr][Ee][Ff][Aa][Bb]
