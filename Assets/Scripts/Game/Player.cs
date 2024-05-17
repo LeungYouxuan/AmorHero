@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using QFramework;
 
@@ -6,53 +7,58 @@ using QFramework;
 namespace QFramework.AmorHero
 {
 	#region Command
-	public class IncreaseRunTime : AbstractCommand
+	public class CheckPlayerWithPlatform : AbstractCommand
 	{
-		protected override void OnExecute()
+		private Vector2 centPosition;
+		private Vector2 centerOffset;
+		private float checkRadius;
+		private LayerMask layerMask;
+
+		public CheckPlayerWithPlatform(Vector2 centPosition, Vector2 centerOffset, float checkRadius, LayerMask layerMask)
 		{
-			float duration = Time.time - this.GetModel<PlayerModel>().currentTime;//跑步的那些帧数所经过的时间
-			Debug.Log("帧消耗时间:" + duration);
-			this.GetModel<PlayerModel>().playerRunTime += duration;
-			this.SendEvent<PlayerRunTimeChangeEvent>();
+			this.centPosition = centPosition;
+			this.centerOffset = centerOffset;
+			this.checkRadius = checkRadius;
+			this.layerMask = layerMask;
 		}
-	}
-	public class InCreaseGameTime : AbstractCommand
-	{
+
 		protected override void OnExecute()
 		{
-			float duration = Time.time - this.GetModel<PlayerModel>().currentTime;
-			this.GetModel<PlayerModel>().currentTime += duration;
-			this.SendEvent<GameTimeChangeEvent>();
+			var model = this.GetModel<PlayerModel>();
+			model.isOnPlatform.Value = Physics2D.OverlapCircle(centPosition + centerOffset, checkRadius, layerMask);
+			if (model.isOnPlatform.Value)
+			{
+				//Debug.Log("玩家站在地面");
+			}
+			else
+			{
+				//Debug.Log("玩家不在地面");
+			}
 		}
 	}
 	#endregion
 	#region Event
-	public struct PlayerRunTimeChangeEvent
-	{
 
-	}
-	public struct GameTimeChangeEvent
+	public struct PlayerJumpEvent
 	{
-
+		
 	}
 	#endregion
 	public class PlayerModel : AbstractModel
 	{
-		public float playerRunTime;//玩家跑步时长
-		public float currentTime;//游戏总时间
+		public float jumpForceValue;//向上跳跃时施加力的大小
+		public BindableProperty<int> playerHealth = new BindableProperty<int>();//玩家生命值上限
+		public BindableProperty<float> playerRunSpeedValue=new BindableProperty<float>();//玩家移动速度大小
+		public BindableProperty<bool> isOnPlatform=new BindableProperty<bool>();
 		protected override void OnInit()
 		{
-			playerRunTime = 0;
-			currentTime = Time.time;
+			playerRunSpeedValue.Value =6f ;
+			jumpForceValue = 8f;
+			playerHealth.Value = 20;
+			isOnPlatform.Value = true;
 		}
 	}
-	public class PlayerApp : Architecture<PlayerApp>
-	{
-		protected override void Init()
-		{
-			this.RegisterModel(new PlayerModel());
-		}
-	}
+
 	public partial class Player : ViewController, IController
 	{
 		public enum PlayerState
@@ -61,10 +67,12 @@ namespace QFramework.AmorHero
 		}
 		public FSM<PlayerState> playerFSM = new FSM<PlayerState>();
 		public Vector2 currentDir = new Vector2(1, 0);//主角默认朝向
-		public float runSpeed;//玩家基础移动速度大小
 		public Animator playerAnimator;//玩家动画控制器组件
 		public PlayerModel playerModel;
 		public Rigidbody2D mRigidBody;
+		public float checkPlatformRadius;//检测平台的检测半径
+		public Vector2 checkPlatformOffset;//检测中心的偏移量
+		public LayerMask platformLayer;//平台的层级
 		void Start()
 		{
 			// Code Here
@@ -75,21 +83,22 @@ namespace QFramework.AmorHero
 			playerFSM.AddState(PlayerState.待机, new PlayerIdleState(playerFSM, this));
 			playerFSM.AddState(PlayerState.跑步, new PlayerRunState(playerFSM, this));
 			playerFSM.AddState(PlayerState.下蹲, new PlayerCrouchState(playerFSM, this));
+			playerFSM.AddState(PlayerState.跳跃,new PlayerJumpState(playerFSM,this));
 			#endregion
 			playerFSM.StartState(PlayerState.待机);
-			this.RegisterEvent<PlayerRunTimeChangeEvent>(e =>
+			#region 事件
+			this.RegisterEvent<PlayerJumpEvent>(e =>
 			{
-				Debug.Log("跑步时长：" + playerModel.playerRunTime);
+				mRigidBody.velocity = new Vector2(mRigidBody.velocity.x, 0);
+				Debug.Log("触发跳跃事件");
 			}).UnRegisterWhenGameObjectDestroyed(gameObject);
-			this.RegisterEvent<GameTimeChangeEvent>(e =>
-			{
-
-			}).UnRegisterWhenGameObjectDestroyed(gameObject);
+			#endregion
 		}
 		void Update()
 		{
 			playerFSM.Update();
-			this.SendCommand<InCreaseGameTime>();
+			//发送检测玩家与平台关系的指令
+			this.SendCommand(new CheckPlayerWithPlatform((Vector2)gameObject.transform.position,checkPlatformOffset,checkPlatformRadius,platformLayer));
 		}
 		void FixedUpdate()
 		{
@@ -99,17 +108,27 @@ namespace QFramework.AmorHero
 		{
 			playerFSM.Clear();
 		}
+		private void OnDrawGizmosSelected()
+		{
+			Gizmos.DrawSphere((Vector2)gameObject.transform.position+checkPlatformOffset,checkPlatformRadius);
+		}
+
 		public void Run(float runX, float runY)
 		{
 			gameObject.transform.localScale = new Vector3(runX, 1, 0);
-			mRigidBody.velocity = new Vector2(runX, runY) * runSpeed;
+			mRigidBody.velocity = new Vector2(runX, runY) * playerModel.playerRunSpeedValue.Value;
 			playerAnimator.SetFloat("runSpeed", mRigidBody.velocity.sqrMagnitude);
 			currentDir = new Vector2(runX, 0);
 		}
-
+		public void Jump(float x,float y)
+		{
+			gameObject.transform.localScale = new Vector3(x, 1, 0);
+			mRigidBody.velocity = new Vector2(x, y) * playerModel.playerRunSpeedValue.Value;
+			currentDir = new Vector2(x, 0);
+		}
 		public IArchitecture GetArchitecture()
 		{
-			return PlayerApp.Interface;
+			return AmorHeroArchitecture.Interface;
 		}
 	}
 	public class PlayerIdleState : AbstractState<Player.PlayerState, Player>
@@ -125,6 +144,7 @@ namespace QFramework.AmorHero
 		{
 			base.OnEnter();
 			Debug.Log("进入待机模式");
+			mTarget.playerAnimator.SetBool("isOnPlatform",true);
 			mTarget.gameObject.transform.localScale = new Vector3(mTarget.currentDir.x, 1, 0);
 			mTarget.playerAnimator.SetFloat("runSpeed", 0f);
 			mTarget.mRigidBody.velocity = Vector2.zero;
@@ -144,6 +164,11 @@ namespace QFramework.AmorHero
 			if (Input.GetKeyDown(KeyCode.S))
 			{
 				mTarget.playerFSM.ChangeState(Player.PlayerState.下蹲);
+			}
+
+			if (runY > 0)
+			{
+				mTarget.playerFSM.ChangeState(Player.PlayerState.跳跃);
 			}
 		}
 		protected override void OnFixedUpdate()
@@ -178,8 +203,6 @@ namespace QFramework.AmorHero
 			{
 				mTarget.playerFSM.ChangeState(Player.PlayerState.下蹲);
 			}
-			else
-				mTarget.SendCommand<IncreaseRunTime>();
 		}
 		protected override void OnFixedUpdate()
 		{
@@ -191,6 +214,12 @@ namespace QFramework.AmorHero
 			{
 				mTarget.mRigidBody.velocity = Vector2.zero;
 				mTarget.playerFSM.ChangeState(Player.PlayerState.待机);
+			}
+			else if (runY>0&&runX!=0)
+			{
+				//保留速度
+				mTarget.mRigidBody.velocity = new Vector2(runX*mTarget.playerModel.playerRunSpeedValue.Value, 0);
+				mFSM.ChangeState(Player.PlayerState.跳跃);
 			}
 			else
 				mTarget.Run(runX, runY);
@@ -227,6 +256,42 @@ namespace QFramework.AmorHero
 		{
 			base.OnExit();
 			mTarget.playerAnimator.SetBool("isCrouch", false);
+		}
+	}
+
+	public class PlayerJumpState : AbstractState<Player.PlayerState, Player>
+	{
+		public PlayerJumpState(FSM<Player.PlayerState> fsm, Player target) : base(fsm, target)
+		{
+		}
+
+		protected override void OnEnter()
+		{
+			Debug.Log("进入跳跃状态");
+			mTarget.playerAnimator.SetBool("isOnPlatform",mTarget.playerModel.isOnPlatform.Value);
+			Debug.Log(mTarget.mRigidBody.velocity);
+			//给刚体施加一个向上的瞬时力
+			mTarget.mRigidBody.AddForce(new Vector2(0,mTarget.playerModel.jumpForceValue),ForceMode2D.Impulse);
+
+		}
+
+		protected override void OnUpdate()
+		{
+			//检测玩家的isOnPlatform是否为true,并且Y轴上的速度为非正数
+			if (mTarget.GetModel<PlayerModel>().isOnPlatform.Value)
+			{
+				mFSM.ChangeState(Player.PlayerState.待机);
+			}
+		}
+
+		protected override void OnFixedUpdate()
+		{
+			
+		}
+
+		protected override void OnExit()
+		{
+			mTarget.playerAnimator.SetBool("isOnPlatform",mTarget.playerModel.isOnPlatform.Value);
 		}
 	}
 }
