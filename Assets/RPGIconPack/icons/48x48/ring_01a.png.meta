@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ring_01a_0: 7423373305846514053
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

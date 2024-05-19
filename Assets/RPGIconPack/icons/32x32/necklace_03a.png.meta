@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      necklace_03a_0: -4357236843993575253
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

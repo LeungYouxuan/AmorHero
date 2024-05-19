@@ -17,6 +17,10 @@ namespace QFramework.Example
 			{
 				PlayerLevelText.text = "等级："+this.GetModel<PlayerModel>().playerLevel.ToString();
 			}).UnRegisterWhenGameObjectDestroyed(gameObject);
+			this.RegisterEvent<PlayerHealthChangeEvent>(e =>
+			{
+				PlayerHealthText.text = "生命值：" + this.GetModel<PlayerModel>().playerHealth.Value;
+			});
 			// please add init code here
 		}
 		

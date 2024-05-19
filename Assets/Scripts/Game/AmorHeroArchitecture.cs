@@ -12,6 +12,7 @@ namespace QFramework.AmorHero
             
             RegisterModel<PlayerModel>(new PlayerModel());
             RegisterModel(new PropModel());
+            RegisterModel(new BuffModel());
             #endregion
             
 
@@ -20,6 +21,7 @@ namespace QFramework.AmorHero
             RegisterSystem(new LevelSystem());
             RegisterSystem(new WeaponSystem());
             RegisterSystem(new PropSystem());
+            RegisterSystem(new BuffSystem());
             #endregion
             Debug.Log("Architecture完成初始化！！");
         }

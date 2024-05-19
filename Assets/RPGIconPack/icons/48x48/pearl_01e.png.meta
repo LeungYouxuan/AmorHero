@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pearl_01e_0: 2792920051198959967
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

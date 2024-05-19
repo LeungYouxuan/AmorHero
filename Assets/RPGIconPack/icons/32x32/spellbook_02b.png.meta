@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      spellbook_02b_0: -1885390069820760146
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -20,16 +20,16 @@ MonoBehaviour:
     NameToFullName: []
     BindInfos: []
     ScriptsFolder: Assets/Scripts/Game
-    ClassName: PropShopController
+    ClassName: BuffController
     Namespace: QFramework.AmorHero
     MainCode: "using UnityEngine;\r\nusing QFramework;\r\n\r\n// 1.\u8BF7\u5728\u83DC\u5355
       \u7F16\u8F91\u5668\u6269\u5C55/Namespace Settings \u91CC\u8BBE\u7F6E\u547D\u540D\u7A7A\u95F4\r\n//
       2.\u547D\u540D\u7A7A\u95F4\u66F4\u6539\u540E\uFF0C\u751F\u6210\u4EE3\u7801\u4E4B\u540E\uFF0C\u9700\u8981\u628A\u903B\u8F91\u4EE3\u7801\u6587\u4EF6\uFF08\u975E
       Designer\uFF09\u7684\u547D\u540D\u7A7A\u95F4\u624B\u52A8\u66F4\u6539\r\nnamespace
-      QFramework.AmorHero\r\n{\r\n\tpublic partial class PropShopController : ViewController\r\n\t{\r\n\t\tvoid
+      QFramework.AmorHero\r\n{\r\n\tpublic partial class BuffController : ViewController\r\n\t{\r\n\t\tvoid
       Start()\r\n\t\t{\r\n\t\t\t// Code Here\r\n\t\t}\r\n\t}\r\n}\r\n"
-    DesignerCode: "// Generate Id:7bf5964d-be55-4705-a1b5-7858a22fe7e1\r\nusing UnityEngine;\r\n\r\n//
+    DesignerCode: "// Generate Id:ee93f391-81bb-459d-8490-92d314f8b4e3\r\nusing UnityEngine;\r\n\r\n//
       1.\u8BF7\u5728\u83DC\u5355 \u7F16\u8F91\u5668\u6269\u5C55/Namespace Settings
       \u91CC\u8BBE\u7F6E\u547D\u540D\u7A7A\u95F4\r\n// 2.\u547D\u540D\u7A7A\u95F4\u66F4\u6539\u540E\uFF0C\u751F\u6210\u4EE3\u7801\u4E4B\u540E\uFF0C\u9700\u8981\u628A\u903B\u8F91\u4EE3\u7801\u6587\u4EF6\uFF08\u975E
       Designer\uFF09\u7684\u547D\u540D\u7A7A\u95F4\u624B\u52A8\u66F4\u6539\r\nnamespace
-      QFramework.AmorHero\r\n{\r\n\tpublic partial class PropShopController\r\n\t{\r\n\r\n\t}\r\n}\r\n"
+      QFramework.AmorHero\r\n{\r\n\tpublic partial class BuffController\r\n\t{\r\n\r\n\t}\r\n}\r\n"

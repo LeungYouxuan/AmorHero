@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cotton_01a_0: 1940511358099943725
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

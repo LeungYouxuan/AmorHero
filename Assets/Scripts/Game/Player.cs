@@ -59,6 +59,11 @@ namespace QFramework.AmorHero
 	{
 		
 	}
+
+	public struct PlayerHealthChangeEvent
+	{
+	}
+
 	#endregion
 	public class PlayerModel : AbstractModel
 	{
@@ -113,16 +118,12 @@ namespace QFramework.AmorHero
 			// {
 			// 	Debug.Log("玩家等级更改！！");
 			// }).UnRegisterWhenGameObjectDestroyed(gameObject);
-
+			
 			#endregion
 		}
 		void Update()
 		{
 			playerFSM.Update();
-			if (Input.GetKeyDown(KeyCode.K))
-			{
-				this.SendCommand(new PlayerLevelUp(10));
-			}
 			//发送检测玩家与平台关系的指令
 			this.SendCommand(new CheckPlayerWithPlatform((Vector2)gameObject.transform.position,checkPlatformOffset,checkPlatformRadius,platformLayer));
 		}

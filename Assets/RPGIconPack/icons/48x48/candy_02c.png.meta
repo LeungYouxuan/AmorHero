@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      candy_02c_0: -4945925793832190753
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      scroll_01e_0: 8733567325577212865
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

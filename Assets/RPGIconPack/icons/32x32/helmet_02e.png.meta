@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      helmet_02e_0: 357466439282985830
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
