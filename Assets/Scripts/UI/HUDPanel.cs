@@ -1,23 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
+using QFramework.AmorHero;
 
 namespace QFramework.Example
 {
 	public class HUDPanelData : UIPanelData
 	{
 	}
-	public partial class HUDPanel : UIPanel
+	public partial class HUDPanel : UIPanel,IController
 	{
 		protected override void OnInit(IUIData uiData = null)
 		{
 			mData = uiData as HUDPanelData ?? new HUDPanelData();
+			this.RegisterEvent<PlayerLevelChangeEvent>(e =>
+			{
+				PlayerLevelText.text = "等级："+this.GetModel<PlayerModel>().playerLevel.ToString();
+			}).UnRegisterWhenGameObjectDestroyed(gameObject);
 			// please add init code here
-			RunCountText.text = "跑步时长：";
 		}
 		
 		protected override void OnOpen(IUIData uiData = null)
 		{
+			PlayerHealthText.text = "生命值："+this.GetModel<PlayerModel>().playerHealth.ToString();
+			PlayerLevelText.text = "等级："+this.GetModel<PlayerModel>().playerLevel.ToString();
 		}
 		
 		protected override void OnShow()
@@ -30,6 +36,11 @@ namespace QFramework.Example
 		
 		protected override void OnClose()
 		{
+		}
+
+		public IArchitecture GetArchitecture()
+		{
+			return AmorHeroArchitecture.Interface;
 		}
 	}
 }

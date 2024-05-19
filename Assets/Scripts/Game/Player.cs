@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using QFramework;
+using QFramework.Example;
 
 // 1.请在菜单 编辑器扩展/Namespace Settings 里设置命名空间
 // 2.命名空间更改后，生成代码之后，需要把逻辑代码文件（非 Designer）的命名空间手动更改
@@ -36,10 +37,25 @@ namespace QFramework.AmorHero
 			}
 		}
 	}
+
+	public class PlayerLevelUp : AbstractCommand
+	{
+		private int upValue;
+
+		public PlayerLevelUp(int upValue)
+		{
+			this.upValue = upValue;
+		}
+		protected override void OnExecute()
+		{
+			this.GetModel<PlayerModel>().playerLevel.Value += upValue;
+			Debug.Log("玩家升级！");
+			this.SendEvent<PlayerLevelChangeEvent>();
+		}
+	}
 	#endregion
 	#region Event
-
-	public struct PlayerJumpEvent
+	public struct PlayerLevelChangeEvent
 	{
 		
 	}
@@ -49,13 +65,18 @@ namespace QFramework.AmorHero
 		public float jumpForceValue;//向上跳跃时施加力的大小
 		public BindableProperty<int> playerHealth = new BindableProperty<int>();//玩家生命值上限
 		public BindableProperty<float> playerRunSpeedValue=new BindableProperty<float>();//玩家移动速度大小
-		public BindableProperty<bool> isOnPlatform=new BindableProperty<bool>();
+		public BindableProperty<bool> isOnPlatform=new BindableProperty<bool>();//玩家是否在平台上
+		public BindableProperty<int> playerLevel=new BindableProperty<int>();//玩家的等级
+		public BindableProperty<bool> isAttack=new BindableProperty<bool>();//玩家是否在攻击
 		protected override void OnInit()
 		{
 			playerRunSpeedValue.Value =6f ;
 			jumpForceValue = 8f;
 			playerHealth.Value = 20;
 			isOnPlatform.Value = true;
+			playerLevel.Value = 1;
+			Debug.Log("初始化PlayerModel");
+			this.SendEvent<PlayerLevelChangeEvent>();
 		}
 	}
 
@@ -63,7 +84,7 @@ namespace QFramework.AmorHero
 	{
 		public enum PlayerState
 		{
-			待机, 跑步, 下蹲, 跳跃
+			待机, 跑步, 下蹲, 跳跃,攻击
 		}
 		public FSM<PlayerState> playerFSM = new FSM<PlayerState>();
 		public Vector2 currentDir = new Vector2(1, 0);//主角默认朝向
@@ -84,19 +105,24 @@ namespace QFramework.AmorHero
 			playerFSM.AddState(PlayerState.跑步, new PlayerRunState(playerFSM, this));
 			playerFSM.AddState(PlayerState.下蹲, new PlayerCrouchState(playerFSM, this));
 			playerFSM.AddState(PlayerState.跳跃,new PlayerJumpState(playerFSM,this));
-			#endregion
+			playerFSM.AddState(PlayerState.攻击,new PlayerAttack(playerFSM,this));
 			playerFSM.StartState(PlayerState.待机);
-			#region 事件
-			this.RegisterEvent<PlayerJumpEvent>(e =>
-			{
-				mRigidBody.velocity = new Vector2(mRigidBody.velocity.x, 0);
-				Debug.Log("触发跳跃事件");
-			}).UnRegisterWhenGameObjectDestroyed(gameObject);
+			#endregion
+			#region 事件注册
+			// this.RegisterEvent<PlayerLevelChangeEvent>(e =>
+			// {
+			// 	Debug.Log("玩家等级更改！！");
+			// }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
 			#endregion
 		}
 		void Update()
 		{
 			playerFSM.Update();
+			if (Input.GetKeyDown(KeyCode.K))
+			{
+				this.SendCommand(new PlayerLevelUp(10));
+			}
 			//发送检测玩家与平台关系的指令
 			this.SendCommand(new CheckPlayerWithPlatform((Vector2)gameObject.transform.position,checkPlatformOffset,checkPlatformRadius,platformLayer));
 		}
@@ -120,11 +146,11 @@ namespace QFramework.AmorHero
 			playerAnimator.SetFloat("runSpeed", mRigidBody.velocity.sqrMagnitude);
 			currentDir = new Vector2(runX, 0);
 		}
-		public void Jump(float x,float y)
+
+		public void AttackFinal()
 		{
-			gameObject.transform.localScale = new Vector3(x, 1, 0);
-			mRigidBody.velocity = new Vector2(x, y) * playerModel.playerRunSpeedValue.Value;
-			currentDir = new Vector2(x, 0);
+			Debug.Log("攻击结束");
+			playerModel.isAttack.Value = false;
 		}
 		public IArchitecture GetArchitecture()
 		{
@@ -143,7 +169,7 @@ namespace QFramework.AmorHero
 		protected override void OnEnter()
 		{
 			base.OnEnter();
-			Debug.Log("进入待机模式");
+			//Debug.Log("进入待机模式");
 			mTarget.playerAnimator.SetBool("isOnPlatform",true);
 			mTarget.gameObject.transform.localScale = new Vector3(mTarget.currentDir.x, 1, 0);
 			mTarget.playerAnimator.SetFloat("runSpeed", 0f);
@@ -165,20 +191,27 @@ namespace QFramework.AmorHero
 			{
 				mTarget.playerFSM.ChangeState(Player.PlayerState.下蹲);
 			}
-
 			if (runY > 0)
 			{
+				//给刚体施加一个向上的瞬时力；预备进入跳跃
+				mTarget.mRigidBody.AddForce(new Vector2(0,mTarget.playerModel.jumpForceValue),ForceMode2D.Impulse);
 				mTarget.playerFSM.ChangeState(Player.PlayerState.跳跃);
+			}
+
+			if (Input.GetKeyDown(KeyCode.J))
+			{
+				mFSM.ChangeState(Player.PlayerState.攻击);
 			}
 		}
 		protected override void OnFixedUpdate()
 		{
 			base.OnFixedUpdate();
+
 		}
 		protected override void OnExit()
 		{
 			base.OnExit();
-			Debug.Log("退出待机模式");
+			//Debug.Log("退出待机模式");
 		}
 	}
 	public class PlayerRunState : AbstractState<Player.PlayerState, Player>
@@ -194,7 +227,7 @@ namespace QFramework.AmorHero
 		protected override void OnEnter()
 		{
 			base.OnEnter();
-			Debug.Log("进入跑步状态");
+			//Debug.Log("进入跑步状态");
 		}
 		protected override void OnUpdate()
 		{
@@ -202,6 +235,11 @@ namespace QFramework.AmorHero
 			if (Input.GetKeyDown(KeyCode.S))
 			{
 				mTarget.playerFSM.ChangeState(Player.PlayerState.下蹲);
+			}
+
+			if (Input.GetKeyDown(KeyCode.J))
+			{
+				mTarget.playerFSM.ChangeState(Player.PlayerState.攻击);
 			}
 		}
 		protected override void OnFixedUpdate()
@@ -217,8 +255,9 @@ namespace QFramework.AmorHero
 			}
 			else if (runY>0&&runX!=0)
 			{
-				//保留速度
-				mTarget.mRigidBody.velocity = new Vector2(runX*mTarget.playerModel.playerRunSpeedValue.Value, 0);
+				//给刚体施加一个向上的瞬时力；预备进入跳跃
+				mTarget.mRigidBody.AddForce(new Vector2(0,mTarget.playerModel.jumpForceValue),ForceMode2D.Impulse);
+				Debug.Log("从跑步到跳跃");
 				mFSM.ChangeState(Player.PlayerState.跳跃);
 			}
 			else
@@ -227,7 +266,7 @@ namespace QFramework.AmorHero
 		protected override void OnExit()
 		{
 			base.OnExit();
-			Debug.Log("退出跑步状态");
+			//Debug.Log("退出跑步状态");
 		}
 	}
 	public class PlayerCrouchState : AbstractState<Player.PlayerState, Player>
@@ -268,17 +307,19 @@ namespace QFramework.AmorHero
 		protected override void OnEnter()
 		{
 			Debug.Log("进入跳跃状态");
-			mTarget.playerAnimator.SetBool("isOnPlatform",mTarget.playerModel.isOnPlatform.Value);
 			Debug.Log(mTarget.mRigidBody.velocity);
-			//给刚体施加一个向上的瞬时力
-			mTarget.mRigidBody.AddForce(new Vector2(0,mTarget.playerModel.jumpForceValue),ForceMode2D.Impulse);
-
+			mTarget.playerAnimator.SetBool("isOnPlatform",false);
 		}
 
 		protected override void OnUpdate()
 		{
-			//检测玩家的isOnPlatform是否为true,并且Y轴上的速度为非正数
-			if (mTarget.GetModel<PlayerModel>().isOnPlatform.Value)
+			//如果判定在平台上；并且Y轴方向没有速度；那说明玩家不处于跳跃的过程；切换到Idle
+			if (mTarget.GetModel<PlayerModel>().isOnPlatform.Value&&mTarget.mRigidBody.velocity.y==0)
+			{
+				mFSM.ChangeState(Player.PlayerState.待机);
+			}
+			//如果判定在平台上；并且Y轴方向有负方向速度；那说明玩家处于落地瞬间；切换到Idle
+			if (mTarget.GetModel<PlayerModel>().isOnPlatform.Value&&mTarget.mRigidBody.velocity.y<0f)
 			{
 				mFSM.ChangeState(Player.PlayerState.待机);
 			}
@@ -292,6 +333,40 @@ namespace QFramework.AmorHero
 		protected override void OnExit()
 		{
 			mTarget.playerAnimator.SetBool("isOnPlatform",mTarget.playerModel.isOnPlatform.Value);
+		}
+	}
+
+	public class PlayerAttack:AbstractState<Player.PlayerState, Player>
+	{
+		public PlayerAttack(FSM<Player.PlayerState> fsm, Player target) : base(fsm, target)
+		{
+		}
+
+		protected override void OnEnter()
+		{
+			//播放第一段攻击动画
+			mTarget.mRigidBody.velocity = Vector2.zero;
+			mTarget.playerModel.isAttack.Value = true;
+			mTarget.playerAnimator.SetBool("isAttack",true);
+		}
+
+		protected override void OnUpdate()
+		{
+			if (!mTarget.playerModel.isAttack.Value)
+			{
+				mFSM.ChangeState(Player.PlayerState.待机);
+			}
+		}
+
+		protected override void OnFixedUpdate()
+		{
+			
+		}
+
+		protected override void OnExit()
+		{
+			mTarget.playerAnimator.SetBool("isAttack",false);
+			mTarget.playerModel.isAttack.Value = false;
 		}
 	}
 }

@@ -5,19 +5,34 @@ using QFramework;
 
 namespace QFramework.Example
 {
-	// Generate Id:9b7baed3-0129-4ba4-afbf-7a58fdadbdaf
+	// Generate Id:7663191f-f0ba-48b4-83e5-9f3fa7033b51
 	public partial class HUDPanel
 	{
 		public const string Name = "HUDPanel";
 		
 		[SerializeField]
-		public UnityEngine.UI.Text RunCountText;
+		public UnityEngine.UI.Text PlayerHealthText;
+		[SerializeField]
+		public UnityEngine.UI.Text PlayerLevelText;
+		[SerializeField]
+		public UnityEngine.UI.Image FirstProp;
+		[SerializeField]
+		public UnityEngine.UI.Image SecondProp;
+		[SerializeField]
+		public UnityEngine.UI.Image ThirdProp;
+		[SerializeField]
+		public UnityEngine.UI.Image FourthProp;
 		
 		private HUDPanelData mPrivateData = null;
 		
 		protected override void ClearUIComponents()
 		{
-			RunCountText = null;
+			PlayerHealthText = null;
+			PlayerLevelText = null;
+			FirstProp = null;
+			SecondProp = null;
+			ThirdProp = null;
+			FourthProp = null;
 			
 			mData = null;
 		}

@@ -130,12 +130,12 @@ TextureImporter:
       name: _AttackComboNoMovement_0
       rect:
         serializedVersion: 2
-        x: 27
+        x: 28
         y: 0
-        width: 39
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 37
+        height: 36
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -151,12 +151,12 @@ TextureImporter:
       name: _AttackComboNoMovement_1
       rect:
         serializedVersion: 2
-        x: 159
+        x: 160
         y: 0
-        width: 66
-        height: 43
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 64
+        height: 42
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -172,12 +172,12 @@ TextureImporter:
       name: _AttackComboNoMovement_2
       rect:
         serializedVersion: 2
-        x: 281
+        x: 282
         y: 0
-        width: 65
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 63
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -193,12 +193,12 @@ TextureImporter:
       name: _AttackComboNoMovement_3
       rect:
         serializedVersion: 2
-        x: 401
+        x: 402
         y: 0
-        width: 59
-        height: 35
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 57
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -214,12 +214,12 @@ TextureImporter:
       name: _AttackComboNoMovement_4
       rect:
         serializedVersion: 2
-        x: 510
+        x: 511
         y: 0
-        width: 38
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 36
+        height: 36
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -235,12 +235,12 @@ TextureImporter:
       name: _AttackComboNoMovement_5
       rect:
         serializedVersion: 2
-        x: 626
+        x: 627
         y: 0
-        width: 42
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 40
+        height: 36
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -256,12 +256,12 @@ TextureImporter:
       name: _AttackComboNoMovement_6
       rect:
         serializedVersion: 2
-        x: 747
+        x: 748
         y: 0
-        width: 77
-        height: 41
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 75
+        height: 40
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -277,12 +277,12 @@ TextureImporter:
       name: _AttackComboNoMovement_7
       rect:
         serializedVersion: 2
-        x: 864
+        x: 865
         y: 0
-        width: 64
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 62
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -298,12 +298,12 @@ TextureImporter:
       name: _AttackComboNoMovement_8
       rect:
         serializedVersion: 2
-        x: 984
+        x: 985
         y: 0
-        width: 46
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 44
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -319,12 +319,12 @@ TextureImporter:
       name: _AttackComboNoMovement_9
       rect:
         serializedVersion: 2
-        x: 1104
+        x: 1105
         y: 0
-        width: 45
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 43
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -339,7 +339,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5f2e32040b5d3ca4985a62318542b2fa
     internalID: 0
     vertices: []
     indices: 

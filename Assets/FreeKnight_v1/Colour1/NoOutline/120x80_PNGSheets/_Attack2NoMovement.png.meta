@@ -118,12 +118,12 @@ TextureImporter:
       name: _Attack2NoMovement_0
       rect:
         serializedVersion: 2
-        x: 30
+        x: 31
         y: 0
-        width: 38
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 36
+        height: 36
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,12 +139,12 @@ TextureImporter:
       name: _Attack2NoMovement_1
       rect:
         serializedVersion: 2
-        x: 146
+        x: 147
         y: 0
-        width: 42
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 40
+        height: 36
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,12 +160,12 @@ TextureImporter:
       name: _Attack2NoMovement_2
       rect:
         serializedVersion: 2
-        x: 267
+        x: 268
         y: 0
-        width: 77
-        height: 41
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 75
+        height: 40
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,12 +181,12 @@ TextureImporter:
       name: _Attack2NoMovement_3
       rect:
         serializedVersion: 2
-        x: 384
+        x: 385
         y: 0
-        width: 64
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 62
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,12 +202,12 @@ TextureImporter:
       name: _Attack2NoMovement_4
       rect:
         serializedVersion: 2
-        x: 504
+        x: 505
         y: 0
-        width: 46
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 44
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,12 +223,12 @@ TextureImporter:
       name: _Attack2NoMovement_5
       rect:
         serializedVersion: 2
-        x: 624
+        x: 625
         y: 0
-        width: 45
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 43
+        height: 35
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -243,7 +243,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0454dd76cac2be24ebc44cd6bb05cdbb
     internalID: 0
     vertices: []
     indices: 
