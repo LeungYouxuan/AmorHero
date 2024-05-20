@@ -99,7 +99,7 @@ namespace QFramework.AmorHero
 			var model=this.GetModel<BuffModel>();
 			for (int i = 0; i < model.BuffList.Count; i++)
 			{
-				if (buffID == model.BuffList[i].buffID)
+				if (buffID == model.BuffList[i].buff_id)
 				{
 					model.BuffList[i].OnDestroy();
 					model.BuffList.RemoveAt(i);

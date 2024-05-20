@@ -68,7 +68,8 @@ namespace QFramework.AmorHero
 	public class PlayerModel : AbstractModel
 	{
 		public float jumpForceValue;//向上跳跃时施加力的大小
-		public BindableProperty<int> playerHealth = new BindableProperty<int>();//玩家生命值上限
+		public BindableProperty<int> playerHealth = new BindableProperty<int>();//玩家当前生命值
+		public BindableProperty<int> playerMaxHealth = new BindableProperty<int>();//玩家最大生命值上限
 		public BindableProperty<float> playerRunSpeedValue=new BindableProperty<float>();//玩家移动速度大小
 		public BindableProperty<bool> isOnPlatform=new BindableProperty<bool>();//玩家是否在平台上
 		public BindableProperty<int> playerLevel=new BindableProperty<int>();//玩家的等级
@@ -78,6 +79,11 @@ namespace QFramework.AmorHero
 			playerRunSpeedValue.Value =6f ;
 			jumpForceValue = 8f;
 			playerHealth.Value = 20;
+			playerHealth.Register(newValue =>
+			{
+				this.SendEvent<PlayerHealthChangeEvent>();
+			});
+			playerMaxHealth.Value = 300;
 			isOnPlatform.Value = true;
 			playerLevel.Value = 1;
 			Debug.Log("初始化PlayerModel");
