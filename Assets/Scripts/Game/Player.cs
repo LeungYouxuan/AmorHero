@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 using QFramework;
 using QFramework.Example;
+using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 // 1.请在菜单 编辑器扩展/Namespace Settings 里设置命名空间
 // 2.命名空间更改后，生成代码之后，需要把逻辑代码文件（非 Designer）的命名空间手动更改
@@ -37,7 +40,6 @@ namespace QFramework.AmorHero
 			}
 		}
 	}
-
 	public class PlayerLevelUp : AbstractCommand
 	{
 		private int upValue;
@@ -55,39 +57,49 @@ namespace QFramework.AmorHero
 	}
 	#endregion
 	#region Event
-	public struct PlayerLevelChangeEvent
-	{
-		
-	}
-
-	public struct PlayerHealthChangeEvent
-	{
-	}
-
+	public struct PlayerLevelChangeEvent{}
+	public struct PlayerHealthChangeEvent{}
+	public struct PlayerMaxHealthChangeEvent{}
+	public struct PlayerMagicPointChangeEvent{}
+	public struct PlayerMaxMagicPointChangeEvent{}
 	#endregion
 	public class PlayerModel : AbstractModel
 	{
+		public PlayerData playerData;
 		public float jumpForceValue;//向上跳跃时施加力的大小
 		public BindableProperty<int> playerHealth = new BindableProperty<int>();//玩家当前生命值
 		public BindableProperty<int> playerMaxHealth = new BindableProperty<int>();//玩家最大生命值上限
+		public BindableProperty<int> playerMagicPoint = new BindableProperty<int>();//玩家当前意能量
+		public BindableProperty<int> playerMaxMagicPoint = new BindableProperty<int>();//玩家最大意能量上限
 		public BindableProperty<float> playerRunSpeedValue=new BindableProperty<float>();//玩家移动速度大小
 		public BindableProperty<bool> isOnPlatform=new BindableProperty<bool>();//玩家是否在平台上
 		public BindableProperty<int> playerLevel=new BindableProperty<int>();//玩家的等级
 		public BindableProperty<bool> isAttack=new BindableProperty<bool>();//玩家是否在攻击
 		protected override void OnInit()
 		{
-			playerRunSpeedValue.Value =6f ;
-			jumpForceValue = 8f;
-			playerHealth.Value = 20;
-			playerHealth.Register(newValue =>
+			AsyncOperationHandle<PlayerData> handle = Addressables.LoadAssetAsync<PlayerData>("Assets/Resource/PlayerData.asset");
+			handle.Completed += (operationHandle =>
 			{
+				playerData = operationHandle.Result;
+				GetPlayerDataCore(0);
+				playerHealth.Value = 20;
+				playerMagicPoint.Value = 20;
+				isOnPlatform.Value = true;
+				Debug.Log("初始化PlayerModel");
+				this.SendEvent<PlayerLevelChangeEvent>();
 				this.SendEvent<PlayerHealthChangeEvent>();
 			});
-			playerMaxHealth.Value = 300;
-			isOnPlatform.Value = true;
-			playerLevel.Value = 1;
-			Debug.Log("初始化PlayerModel");
-			this.SendEvent<PlayerLevelChangeEvent>();
+		}
+		void GetPlayerDataCore(int coreIndex)
+		{
+			if (playerData.PlayerDataCoreList.Count > coreIndex)
+			{
+				playerMaxHealth.Value = playerData.PlayerDataCoreList[coreIndex].player_max_health;
+				playerMaxMagicPoint.Value = playerData.PlayerDataCoreList[coreIndex].player_max_magicpoint;
+				jumpForceValue = playerData.PlayerDataCoreList[coreIndex].player_jump_force_value;
+				playerRunSpeedValue.Value = playerData.PlayerDataCoreList[coreIndex].player_runspeed_value;
+				playerLevel.Value=playerData.PlayerDataCoreList[coreIndex].player_level;
+			}
 		}
 	}
 
@@ -120,11 +132,6 @@ namespace QFramework.AmorHero
 			playerFSM.StartState(PlayerState.待机);
 			#endregion
 			#region 事件注册
-			// this.RegisterEvent<PlayerLevelChangeEvent>(e =>
-			// {
-			// 	Debug.Log("玩家等级更改！！");
-			// }).UnRegisterWhenGameObjectDestroyed(gameObject);
-			
 			#endregion
 		}
 		void Update()
@@ -164,6 +171,9 @@ namespace QFramework.AmorHero
 			return AmorHeroArchitecture.Interface;
 		}
 	}
+
+	#region 玩家状态类
+
 	public class PlayerIdleState : AbstractState<Player.PlayerState, Player>
 	{
 		public PlayerIdleState(FSM<Player.PlayerState> fsm, Player target) : base(fsm, target)
@@ -304,7 +314,6 @@ namespace QFramework.AmorHero
 			mTarget.playerAnimator.SetBool("isCrouch", false);
 		}
 	}
-
 	public class PlayerJumpState : AbstractState<Player.PlayerState, Player>
 	{
 		public PlayerJumpState(FSM<Player.PlayerState> fsm, Player target) : base(fsm, target)
@@ -342,7 +351,6 @@ namespace QFramework.AmorHero
 			mTarget.playerAnimator.SetBool("isOnPlatform",mTarget.playerModel.isOnPlatform.Value);
 		}
 	}
-
 	public class PlayerAttack:AbstractState<Player.PlayerState, Player>
 	{
 		public PlayerAttack(FSM<Player.PlayerState> fsm, Player target) : base(fsm, target)
@@ -376,4 +384,7 @@ namespace QFramework.AmorHero
 			mTarget.playerModel.isAttack.Value = false;
 		}
 	}
+
+	#endregion
+
 }

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf112a8ed3649058ac8773d9942f4c7, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  PlayerDataCoreList:
+  - player_health: 20
+    player_max_health: 100
+    player_magicpoint: 20
+    player_max_magicpoint: 100
+    player_jump_force_value: 8
+    player_runspeed_value: 6
+    player_level: 1
+  - player_health: 100
+    player_max_health: 100
+    player_magicpoint: 100
+    player_max_magicpoint: 100
+    player_jump_force_value: 8
+    player_runspeed_value: 6
+    player_level: 2

@@ -15,13 +15,12 @@ namespace QFramework.Example
 			mData = uiData as HUDPanelData ?? new HUDPanelData();
 			this.RegisterEvent<PlayerLevelChangeEvent>(e =>
 			{
-				PlayerLevelText.text = "等级："+this.GetModel<PlayerModel>().playerLevel.ToString();
+				PlayerLevelText.text = "等级："+this.GetModel<PlayerModel>().playerLevel.Value.ToString();
 			}).UnRegisterWhenGameObjectDestroyed(gameObject);
 			this.RegisterEvent<PlayerHealthChangeEvent>(e =>
 			{
 				PlayerHealthText.text = "生命值：" + this.GetModel<PlayerModel>().playerHealth.Value;
 			});
-			// please add init code here
 		}
 		
 		protected override void OnOpen(IUIData uiData = null)

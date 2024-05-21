@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupportOldQF", "SupportOldQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIKit.Editor", "UIKit.Editor.csproj", "{57c61abf-9a0c-c7bd-f983-0a3698290e10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResKit.Editor", "ResKit.Editor.csproj", "{5e144de8-a31d-9fa7-0216-2cb6fd703b92}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{8b25dce2-dd31-98ab-9f4c-963d1cfb18f8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResKit.Editor", "ResKit.Editor.csproj", "{5e144de8-a31d-9fa7-0216-2cb6fd703b92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{9c9ec1fd-7aa2-0ee9-41aa-58c2d3ce36d3}"
 EndProject
@@ -36,10 +36,10 @@ Global
 		{315eb1ba-c499-0034-3fd7-21cf0853df1a}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57c61abf-9a0c-c7bd-f983-0a3698290e10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57c61abf-9a0c-c7bd-f983-0a3698290e10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5e144de8-a31d-9fa7-0216-2cb6fd703b92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5e144de8-a31d-9fa7-0216-2cb6fd703b92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8b25dce2-dd31-98ab-9f4c-963d1cfb18f8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8b25dce2-dd31-98ab-9f4c-963d1cfb18f8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5e144de8-a31d-9fa7-0216-2cb6fd703b92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5e144de8-a31d-9fa7-0216-2cb6fd703b92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9c9ec1fd-7aa2-0ee9-41aa-58c2d3ce36d3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9c9ec1fd-7aa2-0ee9-41aa-58c2d3ce36d3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{e7795925-edf5-75ec-1de5-adf1ae7ee74e}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

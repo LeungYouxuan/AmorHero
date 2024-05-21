@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using OfficeOpenXml;
+using QFramework.AmorHero;
 using UnityEditor;
 using UnityEngine;
 using QFramework.BuffDesign;
@@ -14,8 +15,44 @@ public class StartUp
     {
         CreatePropDataByExcel();
         CreateBuffDataByExcel();
+        CreatePlayerDataByExcel();
     }
+    static void CreatePlayerDataByExcel()
+    {
+        string path = Application.dataPath + "/Editor/玩家配置表.xlsx";
+        string assetName = "PlayerData";
+        FileInfo fileInfo = new FileInfo(path);
+        PlayerData playerData = (PlayerData)ScriptableObject.CreateInstance(typeof(PlayerData));
+        using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
+        {
+            ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets["玩家配置"];
+            Type type = typeof(PlayerDataCore);
+            for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
+            {
+                PlayerDataCore playerDataCore = new PlayerDataCore();
+                for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
+                {
+                    string header = worksheet.GetValue(1, j).ToString();
+                    FieldInfo variable = type.GetField(header);
+                    if (variable != null)
+                    {
+                        string tableValue = worksheet.GetValue(i, j)?.ToString();
+                        if (!string.IsNullOrEmpty(tableValue))
+                        {
+                            variable.SetValue(playerDataCore , Convert.ChangeType(tableValue, variable.FieldType));
+                        }
+                    }
+                }
 
+                playerData.PlayerDataCoreList.Add(playerDataCore);
+            }
+        }
+
+        string assetPath = "Assets/Resource/" + assetName + ".asset";
+        AssetDatabase.CreateAsset(playerData, assetPath);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
     static void CreateBuffDataByExcel()
     {
         string path = Application.dataPath + "/Editor/Buff管理.xlsx";

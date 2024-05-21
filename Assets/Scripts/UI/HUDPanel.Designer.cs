@@ -5,7 +5,7 @@ using QFramework;
 
 namespace QFramework.Example
 {
-	// Generate Id:7663191f-f0ba-48b4-83e5-9f3fa7033b51
+	// Generate Id:a7a302a5-7620-4d2c-bcea-1890f236702c
 	public partial class HUDPanel
 	{
 		public const string Name = "HUDPanel";
@@ -13,26 +13,17 @@ namespace QFramework.Example
 		[SerializeField]
 		public UnityEngine.UI.Text PlayerHealthText;
 		[SerializeField]
+		public UnityEngine.UI.Text PlayerMagicPointText;
+		[SerializeField]
 		public UnityEngine.UI.Text PlayerLevelText;
-		[SerializeField]
-		public UnityEngine.UI.Image FirstProp;
-		[SerializeField]
-		public UnityEngine.UI.Image SecondProp;
-		[SerializeField]
-		public UnityEngine.UI.Image ThirdProp;
-		[SerializeField]
-		public UnityEngine.UI.Image FourthProp;
 		
 		private HUDPanelData mPrivateData = null;
 		
 		protected override void ClearUIComponents()
 		{
 			PlayerHealthText = null;
+			PlayerMagicPointText = null;
 			PlayerLevelText = null;
-			FirstProp = null;
-			SecondProp = null;
-			ThirdProp = null;
-			FourthProp = null;
 			
 			mData = null;
 		}
